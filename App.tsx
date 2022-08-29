@@ -1,87 +1,85 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { extendTheme, NativeBaseProvider } from "native-base";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  VStack,
-  Box,
-} from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
-
+import { ChatScreen, GroupsPage, Home } from "./pages";
+import { COLORS } from "./consts/Colors";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { ProfessionalsPage } from "./pages/Professionals";
 // Define the config
 const config = {
   useSystemColorMode: false,
   initialColorMode: "dark",
 };
 
+const colors = {
+  primary: COLORS.primary,
+};
+
 // extend the theme
-export const theme = extendTheme({ config });
+export const theme = extendTheme({ config, colors });
 type MyThemeType = typeof theme;
 declare module "native-base" {
   interface ICustomTheme extends MyThemeType {}
 }
+
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   return (
     <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Box
-              _web={{
-                _text: {
-                  fontFamily: "monospace",
-                  fontSize: "sm",
-                },
-              }}
-              px={2}
-              py={1}
-              _dark={{ bg: "blueGray.800" }}
-              _light={{ bg: "blueGray.200" }}
-            >
-              App.js
-            </Box>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
-    </NativeBaseProvider>
-  );
-}
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName: string = "";
 
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light"}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
+              if (route.name === "Home") {
+                iconName = focused ? "home-circle" : "home-circle-outline";
+              } else if (route.name === "Chat") {
+                iconName = focused ? "message-text" : "message-text-outline";
+              } else if (route.name === "Grupos") {
+                iconName = focused ? "account-group" : "account-group-outline";
+              } else if (route.name === "Profissionais") {
+                iconName = focused ? "account-tie" : "account-tie-outline";
+              }
+              // You can return any component that you like here!
+              return <Icon name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: theme.colors.primary,
+            tabBarInactiveTintColor: "gray",
+          })}
+        >
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Chat"
+            component={ChatScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Grupos"
+            component={GroupsPage}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Profissionais"
+            component={ProfessionalsPage}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 }
