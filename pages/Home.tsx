@@ -29,12 +29,12 @@ export const Home = () => {
     },
   ];
   return (
-    <Box paddingX={"6"}>
+    <Box paddingX={"6"} mt={6}>
       <Flex direction="row" padding="4" align={"center"}>
         <Avatar
-          source={{
+          /* source={{
             uri: profilePicture,
-          }}
+          }} */
           size="xl"
         >
           WM

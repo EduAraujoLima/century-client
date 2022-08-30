@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 const gerarProfissional = (): Profissional => {
   return {
-    id: Number(faker.random.numeric()),
+    id: Number(faker.random.numeric(5)),
     nome: faker.name.fullName(),
     especialidade: faker.name.jobTitle(),
     descricao: faker.lorem.paragraph(),

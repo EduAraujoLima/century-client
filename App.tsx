@@ -1,12 +1,17 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { extendTheme, NativeBaseProvider } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { extendTheme, NativeBaseProvider } from "native-base";
 import React from "react";
-import { ChatScreen, GroupsPage, Home } from "./pages";
-import { COLORS } from "./consts/Colors";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+import { COLORS } from "./consts/Colors";
+import GlobalContext from "./context/";
+import { ChatScreen, GroupsPage, Home, ChatScreenNavigator } from "./pages";
+import { Chat } from "./pages/Chat";
 import { ProfessionalsPage } from "./pages/Professionals";
-import GlobalContext  from "./context/";
+
 // Define the config
 const config = {
   useSystemColorMode: false,
@@ -25,65 +30,73 @@ declare module "native-base" {
 }
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <GlobalContext>
-    <NativeBaseProvider>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName: string = "";
-
-              if (route.name === "Home") {
-                iconName = focused ? "home-circle" : "home-circle-outline";
-              } else if (route.name === "Chat") {
-                iconName = focused ? "message-text" : "message-text-outline";
-              } else if (route.name === "Grupos") {
-                iconName = focused ? "account-group" : "account-group-outline";
-              } else if (route.name === "Profissionais") {
-                iconName = focused ? "account-tie" : "account-tie-outline";
-              }
-              // You can return any component that you like here!
-              return <Icon name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: theme.colors.primary,
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Chat"
-            component={ChatScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Grupos"
-            component={GroupsPage}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Profissionais"
-            component={ProfessionalsPage}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </NativeBaseProvider>
+      <NativeBaseProvider>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <TabNavigator />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </NativeBaseProvider>
     </GlobalContext>
-
   );
 }
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: string = "";
+
+          if (route.name === "Home") {
+            iconName = focused ? "home-circle" : "home-circle-outline";
+          } else if (route.name === "Chat List") {
+            iconName = focused ? "message-text" : "message-text-outline";
+          } else if (route.name === "Grupos") {
+            iconName = focused ? "account-group" : "account-group-outline";
+          } else if (route.name === "Profissionais") {
+            iconName = focused ? "account-tie" : "account-tie-outline";
+          }
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Chat List"
+        component={ChatScreenNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Grupos"
+        component={GroupsPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Profissionais"
+        component={ProfessionalsPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Tab.Navigator>
+  );
+};

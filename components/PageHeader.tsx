@@ -7,7 +7,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   placeholder,
 }) => {
   return (
-    <Flex direction="row" px={8} mt={3}>
+    <Flex direction="row" px={8} mt={12}>
       <Input
         w={{
           base: "100%",
