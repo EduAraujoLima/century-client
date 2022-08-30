@@ -6,6 +6,7 @@ import { ChatScreen, GroupsPage, Home } from "./pages";
 import { COLORS } from "./consts/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ProfessionalsPage } from "./pages/Professionals";
+import GlobalContext  from "./context/";
 // Define the config
 const config = {
   useSystemColorMode: false,
@@ -27,6 +28,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    <GlobalContext>
     <NativeBaseProvider>
       <NavigationContainer>
         <Tab.Navigator
@@ -81,5 +83,7 @@ export default function App() {
         </Tab.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
+    </GlobalContext>
+
   );
 }

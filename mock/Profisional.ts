@@ -11,7 +11,7 @@ const gerarProfissional = (): Profissional => {
     telefone: faker.phone.number("(##) #####-####"),
     email: faker.internet.email(),
     endereco: faker.address.streetAddress(),
-    crp: faker.name.findName(),
+    crp: faker.random.numeric(5),
   };
 };
 

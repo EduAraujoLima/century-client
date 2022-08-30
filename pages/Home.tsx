@@ -48,7 +48,7 @@ export const Home = () => {
       </Flex>
       <VStack space="6" mt={3}>
         {props.map((props, index) => (
-          <HomeCard {...props} />
+          <HomeCard key={index} {...props} />
         ))}
       </VStack>
     </Box>

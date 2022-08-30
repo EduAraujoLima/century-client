@@ -12,6 +12,6 @@ export type Profissional = {
 
 export type Profissionais = Array<Profissional>;
 
-export type ProfissionalCard = Pick<Profissional, "nome" | "foto" | "crp">;
+//export type ProfissionalCard = Pick<Profissional, "nome" | "foto" | "crp">;
 
-export type ProfissionalCardList = Array<ProfissionalCard>;
+//export type ProfissionalCardList = Array<ProfissionalCard>;
